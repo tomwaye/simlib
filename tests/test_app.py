@@ -62,14 +62,14 @@ def test_escape_stops_running(app):
 
 def test_step_key_while_paused_runs_one_update_of_step_length(app):
     app._paused = True
-    app._handle_key(key(pygame.K_RIGHT))
+    app._handle_key(key(pygame.K_PERIOD))
     assert app.sim.dts == [1 / 120]
 
 
 def test_step_key_while_running_is_passed_to_sim(app):
-    app._handle_key(key(pygame.K_RIGHT))
+    app._handle_key(key(pygame.K_PERIOD))
     assert app.sim.dts == []
-    assert [e.key for e in app.sim.events] == [pygame.K_RIGHT]
+    assert [e.key for e in app.sim.events] == [pygame.K_PERIOD]
 
 
 def test_unreserved_key_is_passed_to_sim(app):

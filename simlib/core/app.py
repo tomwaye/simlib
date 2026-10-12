@@ -144,7 +144,7 @@ class App:
             self._update_caption()
         elif event.key == pygame.K_f:
             pygame.display.toggle_fullscreen()
-        elif event.key == pygame.K_RIGHT:
+        elif event.key == pygame.K_PERIOD:
             if self._paused:
                 self.sim.update(self.step)
             else:

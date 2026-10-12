@@ -61,7 +61,7 @@ Every simulation run by `App` gets these keys:
 |---|---|
 | Esc | Quit |
 | Space | Pause or resume |
-| Right arrow | While paused, advance by one step |
+| . (period) | While paused, advance by one step |
 | F | Toggle fullscreen |
 
 All other events are passed to `Simulation.handle_event`. The window title

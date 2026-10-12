@@ -1,0 +1,30 @@
+# Tells pip which tool builds the package. pip installs setuptools into a
+# temporary environment just for the build.
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+# Package metadata (PEP 621). "name" is what pip calls it; the import name
+# comes from the folder simlib/.
+[project]
+name = "simlib"
+version = "0.1.0"
+description = "A reusable simulation library built on NumPy and Pygame-ce."
+requires-python = ">=3.11"
+authors = [{ name = "Thomas Waye" }]
+dependencies = [
+    "numpy>=2.0",
+    "pygame-ce>=2.5",
+]
+
+# Extras installed only on request: pip install -e ".[dev]"
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+# Only package simlib/. Without this, setuptools may also pick up legacy/
+# or examples/ as packages.
+[tool.setuptools.packages.find]
+include = ["simlib*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,5 +1,6 @@
 import pygame
 from abc import ABC, abstractmethod
+import simlib.core.timing as timing
 
 class Simulation(ABC):
 
@@ -18,7 +19,7 @@ class Simulation(ABC):
         '''Draw to screen'''
 
 class App:
-    def __init__(self, sim: Simulation, size=(800,600), title="Simulation", bg_color=(0,0,0), fps=60.0):
+    def __init__(self, sim: Simulation, size=(800,600), title="Simulation", bg_color=(0,0,0), fps=60.0, step=1/60):
         '''Initialise App'''
         self.sim = sim
         self.size = size
@@ -26,7 +27,9 @@ class App:
         self.fps = fps
         self.screen = None
         self.clock = None
+        self.stepper = None
         self.bg_color=bg_color
+        self.step = step
 
         
 
@@ -38,11 +41,14 @@ class App:
         self.clock = pygame.Clock()
         self.sim.setup()
         self._running = True
+        self.stepper = timing.FixedStep(1/60)
         try:
             while self._running:
                 dt = self.clock.tick(self.fps) / 1000
+                n = self.stepper.advance(dt)
                 self._handle_events()
-                self.sim.update(dt)
+                for _ in range(n):
+                    self.sim.update(self.stepper.step)
                 self.screen.fill(self.bg_color)
                 self.sim.draw(self.screen)
                 pygame.display.flip()
@@ -62,10 +68,10 @@ class CircleTest(Simulation):
     def setup(self):
         self.x = 400
     def update(self, dt):
-        self.x += 10 * dt
+        self.x += 50 * dt
     def draw(self, screen):
         pygame.draw.circle(screen, "red", (self.x, 300), 40)
 
 if __name__ == "__main__":
-    app = App(CircleTest())
+    app = App(CircleTest(), fps=60.0)
     app.run()
